@@ -1,7 +1,6 @@
 #pragma once
-#include "ClusterClass.h"
-
 //File stream library
+#include "NodeClass.h"
 #include <fstream>
 
 
@@ -16,7 +15,7 @@ public:
 	~Graph();
 	
 	
-	//Add new vertex
+	//Add new vertex to graph
 	vNode* addtoList(std::string Name);
 
 	//Create edge function

@@ -36,7 +36,6 @@ vNode* Graph::addtoList(std::string Name) {
 	else {
 		vNode* temp = headV;
 		_new->next = temp;
-		temp->next = _new;
 		headV = _new;
 		return _new;
 	}
