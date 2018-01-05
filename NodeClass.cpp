@@ -19,6 +19,7 @@ void hNode::unMark() {
 
 hNode::hNode() {
 	hNext = NULL;
+	name = '\0';
 }
 
 
@@ -43,6 +44,8 @@ vNode::vNode() {
 	clusterNumber = -1;
 	inCluster = false;
 	inNeighbours = false;
+	degree = 0;
+	name = '\0';
 }
 
 void vNode::insertNode(vNode* a, double sweight) {
@@ -70,6 +73,8 @@ void vNode::insertNode(vNode* a, double sweight) {
 	_new->inCluster = &a->inCluster;
 	_new->inNeighbours = &a->inNeighbours;
 
+	this->degree++;
+	_new->degree = &a->degree;
 
 	if (adjNodes == NULL)
 		adjNodes = _new;

@@ -10,6 +10,7 @@
 
 Graph::Graph() {
 	headV = NULL;
+	n = 0;
 };
 
 Graph::~Graph() {
@@ -28,7 +29,7 @@ Graph::~Graph() {
 vNode* Graph::addtoList(std::string Name) {
 	vNode* _new = new vNode();
 	_new->name = Name;
-	
+	n++;
 	if (headV == NULL) {
 		headV = _new;
 		return _new;
@@ -157,4 +158,45 @@ void Graph::FrontBackSplit(vNode*& source, vNode*& frontRef, vNode*& backRef)
 	frontRef = source;
 	backRef = slow->next;
 	slow->next = NULL;
+}
+
+void Graph::sort_list(vNode* list)
+{
+	vNode** heads/*[2500] = { 0 }*/;
+	vNode** tails/*[2500] = { 0 }*/;
+
+	heads = new vNode*[n];
+	tails = new vNode*[n];
+	
+	for (int i = 0; i < n; i++) {
+		heads[i] = 0;
+		tails[i] = 0;
+	}
+	
+
+	// O(N) loop
+	for (vNode* it = list; it != 0; it = it->next) {
+		vNode* next = it->next;
+
+		if (heads[it->degree] == 0) {
+			heads[it->degree] = it;
+		}
+		else {
+			tails[it->degree]->next = it;
+		}
+
+		tails[it->degree] = it;
+	}
+
+	vNode* result = 0;
+
+	// constant time loop
+	for (size_t i = 0; i++ < n - 1; ) {
+		if (tails[i]) {
+			tails[i]->next = result;
+			result = heads[i];
+		}
+	}
+
+	headV = result;
 }

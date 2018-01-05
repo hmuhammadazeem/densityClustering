@@ -1,5 +1,6 @@
 #pragma once
 #include "NodeClass.h"
+#include <iostream>
 
 class HashNode {
 public:
@@ -31,7 +32,7 @@ public:
 	int genKey(const int &key);
 
 	/*Return the required value*/
-	bool get(int key, vNode*& value);
+	bool get(int key, vNode*& value, std::string name);
 
 	/*Put the value into table*/
 	void put(int key, vNode* value);

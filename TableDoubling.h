@@ -24,7 +24,7 @@ void tableDoubling(HashMap*& t) {
 
 //DJB2 Algorithm
 int HashKey(string value) {
-	int hashAddress = 5224;
+	int hashAddress = 5983;
 	for (int i = 0; i < value.length(); i++) {
 		hashAddress = ((hashAddress << 5) + hashAddress) + value[i];
 	}

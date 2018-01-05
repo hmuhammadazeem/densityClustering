@@ -27,15 +27,17 @@ int HashMap::genKey(const int &key)
 	return (key % tableSize);
 }
 
-bool HashMap::get(int key, vNode*& value)
+bool HashMap::get(int key, vNode*& value, std::string name)
 {
 	int hashValue = abs(genKey(abs(key)));
 	HashNode *entry = &table[abs(hashValue)];
 
-	while (entry != NULL && entry != nullptr) {
-		if (entry->_key == key) {
-			value = entry->_value;
-			return true;
+	while (entry != NULL) {
+		if (entry->_key == abs(key)) {
+			if (entry->_value->name == name) {
+				value = entry->_value;
+				return true;
+			}
 		}
 		entry = entry->_next;
 	}
@@ -45,8 +47,9 @@ bool HashMap::get(int key, vNode*& value)
 void HashMap::put(int key, vNode* value)
 {
 	int hashValue = abs(genKey(key));
-	HashNode *prev = NULL;
+	HashNode *temp = NULL;
 	HashNode *entry = &table[abs(hashValue)];
+
 
 	if (entry->_key == -1) {
 		entry->_key = abs(key);
@@ -54,12 +57,10 @@ void HashMap::put(int key, vNode* value)
 		currentSize++;
 	}
 	else {
-		// just update the value
-		prev = entry;
-		entry = new HashNode(abs(key), value);
+		HashNode* _new = new HashNode(abs(key), value);
 		HashNode* temp;
 		temp = entry->_next;
-		prev->_next = entry;
-		entry->_next = temp;
+		entry->_next = _new;
+		_new->_next = temp;
 	}
 }
