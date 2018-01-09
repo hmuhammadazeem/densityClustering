@@ -2,15 +2,11 @@
 Density and cluster property based data clustering program implemented using graph data structure.
 
 
-The following data structures were used:
-Graph (Undirected)(Adjacency list)
-HashTable
-Stack
+The following data structures were used: Graph (Undirected)(Adjacency list), HashTable, Stack
 
 The program uses MergeSort that requires extra stack. So, the following directive should be included to run the program. 
 pragma comment(linker, "/STACK:2000000")
 You can substitute the sorting algorithm as long as that algorithm doesn't requires discrete data. 
-=======
 
 
 FILE FORMAT:
@@ -38,7 +34,7 @@ RVS161
 
 Here is the flow chart that describes the working of this project. More details on working can be found in the /working directory.
 
-![alt text](https://raw.githubusercontent.com/hmuhammadazeem/densityClustering/working/flow.jpg)
+![alt text](https://github.com/hmuhammadazeem/densityClustering/blob/master/working/flow.jpg)
 
 
 
