@@ -1,17 +1,17 @@
 # densityClustering
 Density and cluster property based data clustering program implemented using graph data structure.
 
-<<<<<<< HEAD
-The following data structures were used:
-# Graph (Undirected)(Adjacency list)
-# HashTable
-# Stack
 
-# The program uses MergeSort that requires extra stack. So, the following directive should be included to run the program. 
-# #pragma comment(linker, "/STACK:2000000")
-# You can substitute the sorting algorithm as long as that algorithm doesn't requires discrete data. 
+The following data structures were used:
+Graph (Undirected)(Adjacency list)
+HashTable
+Stack
+
+The program uses MergeSort that requires extra stack. So, the following directive should be included to run the program. 
+pragma comment(linker, "/STACK:2000000")
+You can substitute the sorting algorithm as long as that algorithm doesn't requires discrete data. 
 =======
->>>>>>> a709868ed2983fe7dbd08541f41315cd8dd459c8
+
 
 FILE FORMAT:
 [NODE1] [NEIGHBOUR NODE] [EDGE WEIGHT]
