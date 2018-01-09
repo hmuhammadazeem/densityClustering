@@ -3,13 +3,13 @@
 #include <fstream>
 #include "Stack.h"
 #include "NodeClass.h"
+#include "HashMap.h"
 
 using namespace std;
 
 
 class Cluster {
 public:
-	int n = 0;
 	int clusterNumber = 0;
 	double density = 0;
 
@@ -17,7 +17,9 @@ public:
 	int noOfEdges = 0;
 
 	int noOfNodes = 0;
+
 	vNode* clusterElements;
+	HashMap *_cElements;
 
 	//Cluster neighbours stack
 	myList* neighbours;
@@ -36,7 +38,7 @@ public:
 
 	//Member functions
 	void calculateEC(vNode* c);
-	double densityCalc();
+	void densityCalc();
 	double calcCP(vNode* c);
 	bool isAboveThreshold();
 	void addToCluster(hNode* src);

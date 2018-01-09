@@ -46,120 +46,81 @@ hNode* myList::top() {
 	return head->data;
 }
 
-void myList::sort_list(myNode * list)
+void myList::MergeSort(myNode*& headRef)
 {
-	myNode** heads/*[2500] = { 0 }*/;
-	myNode** tails/*[2500] = { 0 }*/;
+	myNode* head = headRef;
+	myNode* a;
+	myNode* b;
 
-	heads = new myNode*[this->n];
-	tails = new myNode*[this->n];
-
-	for (int i = 0; i < n; i++) {
-		heads[i] = 0;
-		tails[i] = 0;
+	/* Base case -- length 0 or 1 */
+	if ((head == NULL) || (head->next == NULL))
+	{
+		return;
 	}
 
-	// O(N) loop
-	for (myNode* it = list; it != 0; it = it->next) {
-		myNode* next = it->next;
+	/* Split head into 'a' and 'b' sublists */
+	FrontBackSplit(head, a, b);
 
-		if (heads[*it->data->degree] == 0) {
-			heads[*it->data->degree] = it;
-		}
-		else {
-			tails[*it->data->degree]->next = it;
-		}
+	/* Recursively sort the sublists */
+	MergeSort(a);
+	MergeSort(b);
 
-		tails[*it->data->degree] = it;
-	}
-
-	myNode* result = 0;
-
-	// constant time loop
-	for (size_t i = 0; i++ < this->n - 2; ) {
-		if (tails[i]) {
-			tails[i]->next = result;
-			result = heads[i];
-		}
-	}
+	/* answer = merge the two sorted lists together */
+	headRef = SortedMerge(a, b);
 }
 
+myNode* myList::SortedMerge(myNode*& a, myNode*& b)
+{
+	myNode* result = NULL;
 
-	void myList::MergeSort(myNode*& headRef)
+	/* Base cases */
+	if (a == NULL)
+		return(b);
+	else if (b == NULL)
+		return(a);
+
+	/* Pick either a or b, and recur */
+	if (*a->data->nodeWeight > *b->data->nodeWeight)
 	{
-		myNode* head = headRef;
-		myNode* a;
-		myNode* b;
-
-		/* Base case -- length 0 or 1 */
-		if ((head == NULL) || (head->next == NULL))
-		{
-			return;
-		}
-
-		/* Split head into 'a' and 'b' sublists */
-		FrontBackSplit(head, a, b);
-
-		/* Recursively sort the sublists */
-		MergeSort(a);
-		MergeSort(b);
-
-		/* answer = merge the two sorted lists together */
-		headRef = SortedMerge(a, b);
+		result = a;
+		result->next = SortedMerge(a->next, b);
 	}
-
-	myNode* myList::SortedMerge(myNode*& a, myNode*& b)
+	else
 	{
-		myNode* result = NULL;
-
-		/* Base cases */
-		if (a == NULL)
-			return(b);
-		else if (b == NULL)
-			return(a);
-
-		/* Pick either a or b, and recur */
-		if (*a->data->nodeWeight > *b->data->nodeWeight)
-		{
-			result = a;
-			result->next = SortedMerge(a->next, b);
-		}
-		else
-		{
-			result = b;
-			result->next = SortedMerge(a, b->next);
-		}
-		return result;
+		result = b;
+		result->next = SortedMerge(a, b->next);
 	}
-	void myList::FrontBackSplit(myNode*& source, myNode*& frontRef, myNode*& backRef)
+	return result;
+}
+void myList::FrontBackSplit(myNode*& source, myNode*& frontRef, myNode*& backRef)
+{
+	myNode* fast = NULL;
+	myNode* slow = NULL;
+	if (source == NULL || source->next == NULL)
 	{
-		myNode* fast = new myNode();
-		myNode* slow = new myNode();
-		if (source == NULL || source->next == NULL)
-		{
-			/* length < 2 cases */
-			frontRef = source;
-			backRef = NULL;
-		}
-		else
-		{
-			slow = source;
-			fast = source->next;
+		/* length < 2 cases */
+		frontRef = source;
+		backRef = NULL;
+	}
+	else
+	{
+		slow = source;
+		fast = source->next;
 
-			/* Advance 'fast' two nodes, and advance 'slow' one node */
-			while (fast != NULL)
+		/* Advance 'fast' two nodes, and advance 'slow' one node */
+		while (fast != NULL)
+		{
+			fast = fast->next;
+			if (fast != NULL)
 			{
+				slow = slow->next;
 				fast = fast->next;
-				if (fast != NULL)
-				{
-					slow = slow->next;
-					fast = fast->next;
-				}
 			}
 		}
-		/* 'slow' is before the midpoint in the list, so split it in two
-		at that point. */
-		frontRef = source;
-		backRef = slow->next;
-		slow->next = NULL;
 	}
+	/* 'slow' is before the midpoint in the list, so split it in two
+	at that point. */
+	frontRef = source;
+	backRef = slow->next;
+	slow->next = NULL;
+}

@@ -27,9 +27,4 @@ public:
 	void MergeSort(myNode*& headRef);
 	myNode* SortedMerge(myNode*& a, myNode*& b);
 	void FrontBackSplit(myNode*& source, myNode*& frontRef, myNode*& backRef);
-
-
-	//Bucket sort
-	void sort_list(myNode* list);
-
 };

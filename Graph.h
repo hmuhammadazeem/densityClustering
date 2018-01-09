@@ -8,7 +8,6 @@ class Graph {
 public:
 	vNode* headV;
 	vNode* highest;
-	int n;
 
 	/* Contructor */
 	Graph();
@@ -33,10 +32,4 @@ public:
 	void MergeSort(vNode*& headRef);
 	void FrontBackSplit(vNode*& source, vNode*& frontRef, vNode*& backRef);
 	vNode* SortedMerge(vNode*& a, vNode*& b);
-
-
-	void sort_list(vNode* list);
-
-	
-
 };

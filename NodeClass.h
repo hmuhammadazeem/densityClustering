@@ -20,9 +20,7 @@ public:
 	//Pointers to the original node data members in our adjacency list									
 	const double *nodeWeight;
 	hNode**  adjNodes;
-	std::string *neighbours;
-
-	int *degree;
+	
 	/*Cluster checks; this attribute is specific to be used during cluster formation*/
 
 	/*Cluster number for identification*/
@@ -49,17 +47,11 @@ public:
 	//Sum of all the edge weights
 	double nodeWeight;
 	
-
-	int degree;
-
 	//Link to the next vertex in the adjacency list
 	vNode*  next;
 
 	//Neighbour nodes
 	hNode*  adjNodes;
-
-	//String containing names of all the neighbours
-	std::string neighbours;
 
 	/*Cluster number for identification*/
 	int clusterNumber;

@@ -36,4 +36,11 @@ public:
 
 	/*Put the value into table*/
 	void put(int key, vNode* value);
+
+	void Delete(int key, std::string name);
 };
+
+void tableDoubling(HashMap*& t);
+
+//DJB2 Algorithm
+int HashKey(std::string value);

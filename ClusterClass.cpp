@@ -1,11 +1,12 @@
 #include "ClusterClass.h"
 
+
 Cluster::Cluster(double d, double cp, int t) {
-	n++;
 	clusterNumber = t;
 	neighbours = new myList();
 	threshCp = cp;
 	threshDensity = d;
+	_cElements = new HashMap(10);
 }
 
 Cluster::~Cluster() {
@@ -17,45 +18,32 @@ Cluster::~Cluster() {
 		delete t;
 	}
 	delete neighbours;
+	delete _cElements;
 }
 
 //Member functions
 
-//
-// This function calculates number of edges of a node with the cluster.
-// 
-// This is used to check whether the node is in periphery of cluster.
-//
 void Cluster::calculateEC(vNode* c) {
 
-	vNode* temp = clusterElements->next;
+	hNode* temp = c->adjNodes;
 	int n = 0;
-	hNode *t = c->adjNodes;
-
+	vNode* t;
 	while (temp != NULL) {
-	//	found = c->neighbours.find(temp->name);
-		while (t != NULL) {
-			if (t->name == temp->name)
-				n++;
-			t = t->hNext;
-		}
-		t = c->adjNodes;
-		temp = temp->next;
+		if (_cElements->get(HashKey(temp->name), t, temp->name))
+			n++;
+		temp = temp->hNext;
 	}
 	noOfEdges += n;
 	currentEC = n;
-	//return currentEC;
 }
 
-double Cluster::densityCalc() {
-	double t = abs(noOfNodes) - 1;
+void Cluster::densityCalc() {
+	double t = (abs(noOfNodes) - 1);
 	density = static_cast<double>((2 * abs(noOfEdges)) / (abs(noOfNodes)* t));
-	return density;
 }
 
 double Cluster::calcCP(vNode* c) {
-	double cp = static_cast<double>(abs(currentEC) / density * (abs(noOfNodes) - 1));
-	return cp;
+	return static_cast<double>(abs(currentEC) / density * (abs(noOfNodes) - 1));
 }
 
 bool Cluster::isAboveThreshold() {
@@ -68,7 +56,6 @@ void Cluster::addToCluster(hNode* src) {
 	vNode* _new = new vNode();
 	_new->name = src->name;
 	_new->adjNodes = *src->adjNodes;
-	_new->neighbours = *(src->neighbours);
 	vNode* temp = NULL;
 
 	if (clusterElements == NULL) {
@@ -80,6 +67,9 @@ void Cluster::addToCluster(hNode* src) {
 		clusterElements = _new;
 		currentNode = _new;
 	}
+	if (_cElements->currentSize >= _cElements->tableSize)
+		tableDoubling(_cElements);
+	_cElements->put(HashKey(currentNode->name), currentNode);
 	noOfNodes++;
 }
 
@@ -87,6 +77,7 @@ void Cluster::delCurrentNode() {
 	vNode* temp2 = clusterElements;
 	clusterElements = clusterElements->next;
 	currentNode = clusterElements;
+	_cElements->Delete(HashKey(temp2->name), temp2->name);
 	delete temp2;
 	noOfNodes--;
 	noOfEdges = noOfEdges - currentEC;
@@ -102,8 +93,7 @@ void Cluster::generateNeighbours() {
 			neighbours->push(temp);
 		temp = temp->hNext;
 	}
-	//neighbours->MergeSort(neighbours->head);
-	neighbours->sort_list(neighbours->head);
+	neighbours->MergeSort(neighbours->head);
 }
 
 void Cluster::cluster(vNode *highest) {
@@ -114,12 +104,12 @@ void Cluster::cluster(vNode *highest) {
 	if (clusterElements == NULL) {
 		clusterElements = new vNode();
 		clusterElements->name = highest->name;
-		clusterElements->neighbours = highest->neighbours;
 		clusterElements->adjNodes = highest->adjNodes;
 		highest->markCluster(clusterNumber);
 		currentNode = clusterElements;
 		noOfNodes++;
 		generateNeighbours();
+		_cElements->put(HashKey(currentNode->name), currentNode);
 	}
 
 	while (neighbours->head != NULL) {

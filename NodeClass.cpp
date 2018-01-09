@@ -19,7 +19,6 @@ void hNode::unMark() {
 
 hNode::hNode() {
 	hNext = NULL;
-	name = '\0';
 }
 
 
@@ -35,17 +34,13 @@ void vNode::unMark() {
 	inCluster = false;
 }
 
-//Constructor
 vNode::vNode() {
 	nodeWeight = 0;
 	next = NULL;
 	adjNodes = NULL;
-	neighbours = "";
 	clusterNumber = -1;
 	inCluster = false;
 	inNeighbours = false;
-	degree = 0;
-	name = '\0';
 }
 
 void vNode::insertNode(vNode* a, double sweight) {
@@ -61,20 +56,12 @@ void vNode::insertNode(vNode* a, double sweight) {
 
 	_new->nodeWeight = &a->nodeWeight;
 
-	//neighbours: A string containing name of all the neighbours for easy searching
-	this->neighbours += a->name;
-
 	_new->edgeWeight = sweight;
-
-	_new->neighbours = &a->neighbours;
 
 	//Cluster checks
 	_new->clusterNumber = &a->clusterNumber;
 	_new->inCluster = &a->inCluster;
 	_new->inNeighbours = &a->inNeighbours;
-
-	this->degree++;
-	_new->degree = &a->degree;
 
 	if (adjNodes == NULL)
 		adjNodes = _new;
